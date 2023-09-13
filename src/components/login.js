@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const BASE_URL = "http://localhost:7020/api";
@@ -9,6 +10,7 @@ const Login = () => {
     });
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value })
@@ -32,17 +34,18 @@ const Login = () => {
             setData(result);
             setError(null);
             localStorage.setItem("token", result.data.token);
-            window.location = "/home";
+            navigate("/home");
           }
           setIsPending(false);
         }
         catch(error) {
-          setError(error);
+          setError("An error has occured. Please try again later");
+          setIsPending(false);
         }
     };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-slate-800">
+    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -54,7 +57,7 @@ const Login = () => {
             Email
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-fuchsia-500"
             id="email"
             type="email"
             placeholder='Email'
@@ -69,7 +72,7 @@ const Login = () => {
             Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline focus:border-fuchsia-500"
             id="password"
             type="password"
             placeholder='Password'
@@ -81,7 +84,7 @@ const Login = () => {
         </div>
         <div className="flex items-center justify-center">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-violet-500 hover:bg-fuchsia-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             { !isPending && <div>Log in</div> }
