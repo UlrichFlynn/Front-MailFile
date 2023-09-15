@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ email }) => {
     const BASE_URL = "http://localhost:7020/api";
     const abortController = new AbortController();
     const navigate = useNavigate();
@@ -31,6 +31,10 @@ const Navbar = () => {
           setIsPending(false);
         }
     }
+    
+    const handleLogin = async() => {
+      navigate("/login");
+    }
 
     
 
@@ -38,10 +42,14 @@ const Navbar = () => {
         <div>
             <nav className="w-screen bg-gradient-to-tr from-fuchsia-500 to-violet-500 text-white p-10 mb-5 flex relative items-center">
                 <h1 className="absolute start-10 font-bold text-2xl">MailFile</h1>
-                <button className="absolute end-10 bg-red-500/50 p-2 rounded hover:bg-red-500" onClick={handleLogout}>
-                    { !isPending && <div>Logout</div> }
-                    { isPending && <div>Logging out...</div> }
-                </button>
+                <div className="absolute end-10 flex">
+                  <p className="font-semibold mr-5 mt-2.5"> { email } </p>
+                  <button className={`${email ? 'bg-red-500/50 hover:bg-red-500' : 'bg-fuchsia-500/60 hover:bg-fuchsia-600'} p-2 rounded`} onClick={ email ? handleLogout : handleLogin }>
+                      { !isPending && email && <div>Logout</div> }
+                      { !email && <div>Login</div> }
+                      { isPending && <div>Logging out...</div> }
+                  </button>
+                </div>
             </nav>
             { error && <div className="align-center text-sm bg-red-200 text-red-700 my-2 mx-2 px-7 py-5 w-full"> { error } </div> }
         </div>

@@ -34,7 +34,11 @@ const Login = () => {
             setData(result);
             setError(null);
             localStorage.setItem("token", result.data.token);
-            navigate("/home");
+            navigate("/home", {
+              state: {
+                user: result.data
+              }
+            });
           }
           setIsPending(false);
         }
