@@ -3,7 +3,6 @@ import Navbar from './navbar';
 import { useNavigate, useLocation } from "react-router-dom";
 
 const CreateUser = () => {
-    const BASE_URL = "http://localhost:7020/api";
     const abortController = new AbortController();
     const [data, setData] = useState({
         email: "",
@@ -35,7 +34,7 @@ const CreateUser = () => {
         e.preventDefault();
         try {
             setIsPending(true);
-            const response = await fetch(BASE_URL + "/users/create-account", {
+            const response = await fetch(process.env.REACT_APP_BASE_API_URL + "/users/create-account", {
                 signal: abortController.signal,
                 method: "POST",
                 headers: {

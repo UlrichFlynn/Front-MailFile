@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const BASE_URL = "http://localhost:7020/api";
     const abortController = new AbortController();
     const [data, setData] = useState({
         email: "",
@@ -20,7 +19,7 @@ const Login = () => {
         e.preventDefault();
         try {
           setIsPending(true);
-          const response = await fetch(BASE_URL+"/users/auth/login", {
+          const response = await fetch(process.env.REACT_APP_BASE_API_URL+"/users/auth/login", {
             signal: abortController.signal,
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -49,7 +48,7 @@ const Login = () => {
     };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
+    <div className="flex justify-center items-center h-screen bg-blue-500/50">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"

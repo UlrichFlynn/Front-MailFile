@@ -4,7 +4,6 @@ import Navbar from './navbar';
 import FileNameItem from './fileNameItem';
 
 const Home = () => {
-    const BASE_URL = "http://localhost:7020/api";
     const abortController = new AbortController();
     const userToken = localStorage.getItem("token");
     const [data, setData] = useState({   
@@ -59,7 +58,7 @@ const Home = () => {
           formData.append("message", data.message);
           formData.append("password", data.password);
 
-          const response = await fetch(BASE_URL+"/files/upload", {
+          const response = await fetch(process.env.REACT_APP_BASE_API_URL+"/files/upload", {
             signal: abortController.signal,
             method: "POST",
             headers: {

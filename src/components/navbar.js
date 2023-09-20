@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ email }) => {
-    const BASE_URL = "http://localhost:7020/api";
     const abortController = new AbortController();
     const navigate = useNavigate();
     const [isPending, setIsPending] = useState(false);
@@ -11,7 +10,7 @@ const Navbar = ({ email }) => {
     const handleLogout = async() => {
         try {
           setIsPending(true);
-          const response = await fetch(BASE_URL+"/users/auth/logout", {
+          const response = await fetch(process.env.REACT_APP_BASE_API_URL+"/users/auth/logout", {
             signal: abortController.signal,
             method: "POST",
           });

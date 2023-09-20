@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 const useFetch = (url, token="") => {
 
-    const BASE_URL = "http://localhost:7020/api";
     const [data, setData] = useState(null);
     const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(null);
@@ -12,7 +11,7 @@ const useFetch = (url, token="") => {
 
         async function fetchData() {
             try{
-                const response = await fetch(BASE_URL + url, {
+                const response = await fetch(process.env.REACT_APP_BASE_API_URL + url, {
                     signal: abortController.signal,
                     headers: {
                       "authorization": "Bearer " + token,

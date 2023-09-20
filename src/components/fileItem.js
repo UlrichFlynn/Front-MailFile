@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const FileItem = ({ files, id, hasPassword }) => {
-    const BASE_URL = "http://localhost:7020/api";
     const abortController = new AbortController();
     let [path, setPath] = useState("");
     const [password, setPassword] = useState("");
@@ -29,7 +28,7 @@ const FileItem = ({ files, id, hasPassword }) => {
         try {
             setIsPending(true);
             let data = { id, password, path };
-            const response = await fetch(`${BASE_URL}/files/download`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}/files/download`, {
                 signal: abortController.signal,
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
