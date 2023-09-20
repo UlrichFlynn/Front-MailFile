@@ -1,41 +1,43 @@
 import { useState, useEffect } from "react";
 
-const UseFetch = (url, method, body) => {
+const useFetch = (url, token="") => {
 
-    const BASE_URL = "http://localhost:7020/api";
-    const [result, setResult] = useState();
+    const [data, setData] = useState(null);
+    const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const abortController = new AbortController();
 
         async function fetchData() {
             try{
-                const response = await fetch(BASE_URL + url, {
+                const response = await fetch(process.env.REACT_APP_BASE_API_URL + url, {
                     signal: abortController.signal,
-                    method,
-                    headers: method === 'POST' ? { "Content-Type": "application/json" } : {},
-                    body: method === 'POST' ? JSON.stringify(body) : ''
+                    headers: {
+                      "authorization": "Bearer " + token,
+                    },
                 });
-                if(!response.ok) throw Error("An error occured");
-                console.log("RESPONSE: ", response);
-                const data = await response.json();
-                setResult(data);
-            }catch(error){
-                if(error.name === "AbortError") {
-                    console.log('Request aborted');
+                const result = await response.json();
+                if (result.type === "error") {
+                  setError(result.message);
                 }
-                return {
-                    type: "error",
-                    message: "Request aborted"
+                else {
+                  setData(result.data);
+                  setError(null);
                 }
+                setIsPending(false);
+            }
+            catch(error){
+                setError("An error has occured. Please try again later");
+                setIsPending(false);
             };
         }
         fetchData();
 
         return () => abortController.abort();
-    }, [url, method, body]);
+    }, [url]);
 
-    return result;
+    return { data, isPending, error };
 }
 
-export default UseFetch;
+export default useFetch;
