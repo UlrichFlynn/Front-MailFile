@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useFetch = (url) => {
+const useFetch = (url, token="") => {
 
     const BASE_URL = "http://localhost:7020/api";
     const [data, setData] = useState(null);
@@ -12,8 +12,12 @@ const useFetch = (url) => {
 
         async function fetchData() {
             try{
-                const response = await fetch(BASE_URL + url, { signal: abortController.signal });
-                if(!response.ok) throw Error("An error occured");
+                const response = await fetch(BASE_URL + url, {
+                    signal: abortController.signal,
+                    headers: {
+                      "authorization": "Bearer " + token,
+                    },
+                });
                 const result = await response.json();
                 if (result.type === "error") {
                   setError(result.message);

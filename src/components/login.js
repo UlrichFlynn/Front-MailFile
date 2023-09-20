@@ -34,7 +34,7 @@ const Login = () => {
             setData(result);
             setError(null);
             localStorage.setItem("token", result.data.token);
-            navigate("/home", {
+            navigate(result.data.role === "ADMIN" ? "/admin/files" : "/home", {
               state: {
                 user: result.data
               }
